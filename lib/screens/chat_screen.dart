@@ -24,7 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       } else if (_counter < 0) {
         setState(() {
-          _counter++;
+        _counter++;
         });
       }
     });
