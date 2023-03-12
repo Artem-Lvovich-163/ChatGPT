@@ -16,18 +16,14 @@ class _ChatScreenState extends State<ChatScreen> {
   int color = 1;
 
   void decrementCounter() {
-    setState(() {
-      _counter--;
-      if (_counter == 0) {
-        setState(() {
+    if (_counter > 0) {
+      setState(() {
+        _counter--;
+        if (_counter == 0) {
           switcher = !switcher;
-        });
-      } else if (_counter < 0) {
-        setState(() {
-        _counter++;
-        });
-      }
-    });
+        }
+      });
+    }
   }
 
   Future<void> getSaveCounter() async {
@@ -36,6 +32,11 @@ class _ChatScreenState extends State<ChatScreen> {
     if (prefs.containsKey('counter')) {
       _counter = prefs.getInt('counter')!;
       setState(() {});
+      if (_counter == 0) {
+        setState(() {
+          switcher = false;
+        });
+      }
     }
   }
 
@@ -75,8 +76,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   IconButton(
                     onPressed: () async {
                       final prefs = await SharedPreferences.getInstance();
-                      decrementCounter();
+
                       prefs.setInt('counter', _counter);
+                      decrementCounter();
                     },
                     icon: const Icon(Icons.send),
                   ),
